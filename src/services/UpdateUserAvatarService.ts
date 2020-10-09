@@ -7,6 +7,8 @@ import fs from 'fs';
 import multer from 'multer';
 import uploadConfig from '../config/upload'
 import { fromString } from "uuidv4";
+import AppError from '../errors/AppError'
+
 
 interface UpdateUserAvatarRequest {
   user_id: string,
@@ -20,7 +22,7 @@ class UpdateUserAvatarService {
     const user = await usersRepository.findOne({ where : { id : user_id }});
   
     if (!user)
-      throw new Error('User Not Found!')
+      throw new AppError('User Not Found!', 401)
 
     if(user.avatar){
       const userAvatarFilePath = path.join(uploadConfig.directory, user.avatar);

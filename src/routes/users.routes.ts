@@ -15,15 +15,10 @@ const upload = multer(uploadConfig);
 usersRouter.post('/', async (req, resp) => {
   const { name, email, password } = req.body;
 
-  try {
     const user = await new CreateUserService().execute({name, email, password});
     // @ts-ignore
     delete user.password;
     resp.json(user);
-  }
-  catch (err) {
-    resp.status(400).json({error : err.message})
-  }
 })
 
 usersRouter.get('/list', async (req, resp) => {
